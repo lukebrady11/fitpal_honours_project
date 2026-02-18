@@ -1,0 +1,9 @@
+# SQLite DB
+backend/*.db
+backend/*.sqlite
+
+# Environment files
+.env
+.env.*
+frontend/.env
+backend/.env
