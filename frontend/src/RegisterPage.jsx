@@ -34,28 +34,30 @@ export default function RegisterPage() {
   return (
     <div className="min-h-[65vh] flex items-center justify-center">
       <div className="w-full max-w-md">
-        <div className="rounded-2xl border border-[rgb(var(--border))] bg-white shadow-sm p-6">
+        <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md shadow-sm p-6">
           <div className="flex items-center gap-3 mb-4">
-            <div className="h-10 w-10 rounded-2xl bg-gradient-to-br from-purple-400 to-purple-600 shadow-sm" />
+            <div className="h-10 w-10 rounded-2xl bg-gradient-to-br from-lime-400 to-slate-800 shadow-sm" />
             <div>
-              <h2 className="text-xl font-semibold tracking-tight">Create your account</h2>
-              <p className="text-sm text-[rgb(var(--muted))]">
+              <h2 className="text-xl font-semibold tracking-tight text-white">
+                Create your account
+              </h2>
+              <p className="text-sm text-slate-400">
                 Save plans, sync across devices, and remove guest limits.
               </p>
             </div>
           </div>
 
           {error ? (
-            <div className="mb-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+            <div className="mb-4 rounded-xl border border-red-400/20 bg-red-500/10 px-4 py-3 text-sm text-red-300">
               {error}
             </div>
           ) : null}
 
           <form onSubmit={onSubmit} className="space-y-3">
             <div>
-              <label className="text-sm font-medium text-slate-700">Email</label>
+              <label className="text-sm font-medium text-slate-300">Email</label>
               <input
-                className="mt-1 w-full px-4 py-3 rounded-xl border border-[rgb(var(--border))] bg-white text-sm focus:outline-none focus:ring-4 focus:ring-purple-200"
+                className="mt-1 w-full px-4 py-3 rounded-xl border border-white/10 bg-slate-900/70 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:ring-4 focus:ring-lime-300/20"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -66,9 +68,9 @@ export default function RegisterPage() {
             </div>
 
             <div>
-              <label className="text-sm font-medium text-slate-700">Password</label>
+              <label className="text-sm font-medium text-slate-300">Password</label>
               <input
-                className="mt-1 w-full px-4 py-3 rounded-xl border border-[rgb(var(--border))] bg-white text-sm focus:outline-none focus:ring-4 focus:ring-purple-200"
+                className="mt-1 w-full px-4 py-3 rounded-xl border border-white/10 bg-slate-900/70 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:ring-4 focus:ring-lime-300/20"
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -76,7 +78,7 @@ export default function RegisterPage() {
                 placeholder="••••••••"
                 required
               />
-              <p className="mt-1 text-xs text-[rgb(var(--muted))]">
+              <p className="mt-1 text-xs text-slate-500">
                 Use 8+ characters. Don’t reuse an important password.
               </p>
             </div>
@@ -87,22 +89,22 @@ export default function RegisterPage() {
               className={[
                 "w-full px-4 py-3 rounded-xl text-sm font-medium shadow-sm transition",
                 isLoading
-                  ? "bg-purple-300 text-white cursor-not-allowed"
-                  : "bg-purple-600 text-white hover:bg-purple-700 active:scale-[0.99]",
+                  ? "bg-lime-300 text-slate-900 cursor-not-allowed"
+                  : "bg-lime-500 text-slate-950 hover:bg-lime-400 active:scale-[0.99]",
               ].join(" ")}
             >
               {isLoading ? "Creating account..." : "Register"}
             </button>
           </form>
 
-          <div className="mt-4 text-sm text-slate-700">
+          <div className="mt-4 text-sm text-slate-300">
             Already have an account?{" "}
-            <Link to="/login" className="font-medium text-purple-700 hover:underline">
+            <Link to="/login" className="font-medium text-lime-300 hover:underline">
               Log in
             </Link>
           </div>
 
-          <div className="mt-3 text-xs text-[rgb(var(--muted))]">
+          <div className="mt-3 text-xs text-slate-500">
             FitPal provides general lifestyle guidance only — not medical advice.
           </div>
         </div>

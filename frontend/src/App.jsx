@@ -1,4 +1,3 @@
-// frontend/src/App.jsx
 import { Routes, Route, NavLink } from "react-router-dom";
 import { useEffect, useMemo, useRef, useState } from "react";
 
@@ -19,8 +18,9 @@ function TabLink({ to, children, end = false }) {
       className={({ isActive }) =>
         [
           "px-3 py-2 rounded-xl text-sm font-medium border transition",
-          "border-[rgb(var(--border))] bg-white hover:bg-slate-50",
-          isActive ? "bg-[rgb(var(--surface-2))] border-purple-200 text-purple-700" : "text-slate-700",
+          isActive
+            ? "bg-lime-500 text-slate-950 border-lime-400"
+            : "border-slate-700 bg-slate-900/80 text-slate-200 hover:bg-slate-800",
         ].join(" ")
       }
     >
@@ -51,7 +51,6 @@ export default function App() {
   const workoutSaveTimerRef = useRef(null);
   const GUEST_KEY = "fitpal_guest_planner_v1";
 
-  // Guest load planner
   useEffect(() => {
     if (user) return;
     try {
@@ -60,7 +59,6 @@ export default function App() {
     } catch {}
   }, [user]);
 
-  // Guest save planner
   useEffect(() => {
     if (user) return;
     try {
@@ -68,7 +66,6 @@ export default function App() {
     } catch {}
   }, [planner, user]);
 
-  // Import guest planner on login
   useEffect(() => {
     const maybeImport = async () => {
       if (!user) return;
@@ -109,7 +106,6 @@ export default function App() {
     maybeImport();
   }, [user, apiBase]);
 
-  // Load planner for logged-in
   useEffect(() => {
     const loadPlanner = async () => {
       if (!user) return;
@@ -125,7 +121,6 @@ export default function App() {
     loadPlanner();
   }, [user, apiBase]);
 
-  // Autosave planner for logged-in (debounced)
   useEffect(() => {
     if (!user) return;
 
@@ -198,7 +193,6 @@ export default function App() {
   const dietSaveTimerRef = useRef(null);
   const DIET_GUEST_KEY = "fitpal_guest_diet_v1";
 
-  // Guest load diet
   useEffect(() => {
     if (user) return;
     try {
@@ -207,7 +201,6 @@ export default function App() {
     } catch {}
   }, [user]);
 
-  // Guest save diet
   useEffect(() => {
     if (user) return;
     try {
@@ -215,7 +208,6 @@ export default function App() {
     } catch {}
   }, [diet, user]);
 
-  // Import guest diet on login
   useEffect(() => {
     const maybeImport = async () => {
       if (!user) return;
@@ -256,7 +248,6 @@ export default function App() {
     maybeImport();
   }, [user, apiBase]);
 
-  // Load diet for logged-in
   useEffect(() => {
     const loadDiet = async () => {
       if (!user) return;
@@ -272,7 +263,6 @@ export default function App() {
     loadDiet();
   }, [user, apiBase]);
 
-  // Autosave diet for logged-in (debounced)
   useEffect(() => {
     if (!user) return;
 
@@ -329,36 +319,40 @@ export default function App() {
     [diet, emptyDiet, user]
   );
 
-  // ---------- UI ----------
   return (
-    <div className="min-h-screen bg-[rgb(var(--bg))]">
-      {/* Header */}
-      <header className="sticky top-0 z-10 bg-white/75 backdrop-blur border-b border-[rgb(var(--border))]">
-        <div className="mx-auto max-w-5xl px-4 py-4 flex items-center justify-between gap-3">
-          {/* Brand */}
+    <div className="min-h-screen bg-slate-950 text-white">
+      {/* Background glow */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute -top-24 -left-24 h-80 w-80 rounded-full bg-lime-400/10 blur-3xl" />
+        <div className="absolute top-1/3 right-0 h-96 w-96 rounded-full bg-lime-300/5 blur-3xl" />
+        <div className="absolute bottom-0 left-1/3 h-80 w-80 rounded-full bg-slate-800/60 blur-3xl" />
+      </div>
+
+      <header className="sticky top-0 z-20 border-b border-slate-800 bg-slate-950/90 backdrop-blur-xl">
+        <div className="mx-auto max-w-6xl px-4 py-4 flex items-center justify-between gap-3">
           <div className="flex items-center gap-3">
-            <div className="h-10 w-10 rounded-2xl bg-gradient-to-br from-purple-400 to-purple-600 shadow-sm" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-lime-400/20 bg-slate-900 shadow-[0_0_25px_rgba(132,204,22,0.12)]">
+              <div className="h-4 w-4 rounded-full bg-lime-400" />
+            </div>
+
             <div>
-              <div className="font-semibold leading-tight">FitPal</div>
-              <div className="text-xs text-[rgb(var(--muted))]">
-                Fitness • Diet • Planning
-              </div>
+              <div className="font-semibold leading-tight text-white">FitPal</div>
+              <div className="text-xs text-slate-400">Fitness • Diet • Planning</div>
             </div>
           </div>
 
-          {/* Auth */}
           <div className="flex items-center gap-2">
             {loading ? (
-              <span className="text-sm text-[rgb(var(--muted))]">Checking session…</span>
+              <span className="text-sm text-slate-400">Checking session…</span>
             ) : user ? (
               <>
-                <span className="text-xs px-3 py-2 rounded-xl border border-[rgb(var(--border))] bg-white text-slate-700">
+                <span className="text-xs px-3 py-2 rounded-xl border border-slate-700 bg-slate-900/80 text-slate-200">
                   {user.email}
                   {user.isAdmin ? " • admin" : ""}
                 </span>
                 <button
                   onClick={logout}
-                  className="px-3 py-2 rounded-xl text-sm font-medium border border-[rgb(var(--border))] bg-white hover:bg-slate-50 transition"
+                  className="px-3 py-2 rounded-xl text-sm font-medium border border-slate-700 bg-slate-900/80 text-slate-200 hover:bg-slate-800 transition"
                 >
                   Logout
                 </button>
@@ -370,8 +364,9 @@ export default function App() {
                   className={({ isActive }) =>
                     [
                       "px-3 py-2 rounded-xl text-sm font-medium border transition",
-                      "border-[rgb(var(--border))] bg-white hover:bg-slate-50",
-                      isActive ? "bg-[rgb(var(--surface-2))] border-purple-200 text-purple-700" : "text-slate-700",
+                      isActive
+                        ? "bg-lime-500 text-slate-950 border-lime-400"
+                        : "border-slate-700 bg-slate-900/80 text-slate-200 hover:bg-slate-800",
                     ].join(" ")
                   }
                 >
@@ -382,8 +377,9 @@ export default function App() {
                   className={({ isActive }) =>
                     [
                       "px-3 py-2 rounded-xl text-sm font-medium border transition",
-                      "border-[rgb(var(--border))] bg-white hover:bg-slate-50",
-                      isActive ? "bg-[rgb(var(--surface-2))] border-purple-200 text-purple-700" : "text-slate-700",
+                      isActive
+                        ? "bg-lime-500 text-slate-950 border-lime-400"
+                        : "border-slate-700 bg-slate-900/80 text-slate-200 hover:bg-slate-800",
                     ].join(" ")
                   }
                 >
@@ -394,8 +390,7 @@ export default function App() {
           </div>
         </div>
 
-        {/* Tabs */}
-        <div className="mx-auto max-w-5xl px-4 pb-4">
+        <div className="mx-auto max-w-6xl px-4 pb-4">
           <div className="flex flex-wrap gap-2">
             <TabLink to="/" end>
               Home
@@ -408,8 +403,7 @@ export default function App() {
         </div>
       </header>
 
-      {/* Main */}
-      <main className="mx-auto max-w-5xl px-4 py-6">
+      <main className="relative z-10 mx-auto max-w-6xl px-4 py-6">
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/chat" element={<ChatPage plannerApi={plannerApi} dietApi={dietApi} />} />
@@ -420,8 +414,7 @@ export default function App() {
           <Route path="/register" element={<RegisterPage />} />
         </Routes>
 
-        {/* small footer */}
-        <div className="mt-10 text-xs text-[rgb(var(--muted))]">
+        <div className="mt-10 text-xs text-slate-500">
           FitPal provides general lifestyle guidance only — not medical advice.
         </div>
       </main>

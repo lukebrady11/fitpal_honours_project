@@ -43,7 +43,6 @@ export default function ChatPage({ plannerApi, dietApi }) {
     const nextMessages = [...messages, { role: "user", content: userText }];
     setMessages(nextMessages);
 
-    // ✅ Evaluation: user sent a chat message
     logEvent(apiBase, { type: "chat_message_sent", isLoggedIn });
 
     try {
@@ -71,7 +70,6 @@ export default function ChatPage({ plannerApi, dietApi }) {
         );
       }
 
-      // ✅ Evaluation: safety triage
       if (data.triage) {
         logEvent(apiBase, {
           type: "safety_triage_triggered",
@@ -82,13 +80,11 @@ export default function ChatPage({ plannerApi, dietApi }) {
 
       setMessages((prev) => [...prev, { role: "assistant", content: data.reply }]);
 
-      // Workout plan draft
       if (data.planDraft && data.planDraft.items) {
         setLatestPlanDraft(data.planDraft);
         logEvent(apiBase, { type: "plan_generated", isLoggedIn });
       }
 
-      // Diet plan draft
       if (data.dietDraft && data.dietDraft.items) {
         setLatestDietDraft(data.dietDraft);
         logEvent(apiBase, { type: "diet_plan_generated", isLoggedIn });
@@ -172,25 +168,23 @@ export default function ChatPage({ plannerApi, dietApi }) {
     <div className="space-y-4">
       <div className="flex items-end justify-between gap-3">
         <div>
-          <h2 className="text-xl font-semibold tracking-tight">Chat</h2>
-          <p className="text-sm text-[rgb(var(--muted))]">
+          <h2 className="text-xl font-semibold tracking-tight text-white">Chat</h2>
+          <p className="text-sm text-slate-400">
             Ask for workouts, meal plans, or habit tips. Plans can be saved to your
-            Planner/Diet tabs.
+            Planner and Diet tabs.
           </p>
         </div>
 
         <div className="hidden md:block">
-          <span className="inline-flex items-center gap-2 rounded-full border border-purple-200 bg-[rgb(var(--surface-2))] px-3 py-1 text-xs text-purple-700">
-            <span className="h-2 w-2 rounded-full bg-purple-500" />
-            Modern • Light Purple
+          <span className="inline-flex items-center gap-2 rounded-full border border-lime-400/20 bg-white/5 px-3 py-1 text-xs text-lime-300 backdrop-blur-sm">
+            <span className="h-2 w-2 rounded-full bg-lime-400" />
+            Fitness • Diet • Planner
           </span>
         </div>
       </div>
 
-      {/* Chat container */}
-      <div className="rounded-2xl border border-[rgb(var(--border))] bg-white shadow-sm">
+      <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md shadow-sm">
         <div className="flex h-[560px] flex-col">
-          {/* Messages */}
           <div className="flex-1 overflow-y-auto p-4">
             <div className="flex flex-col gap-3">
               {messages.map((msg, index) => (
@@ -199,38 +193,35 @@ export default function ChatPage({ plannerApi, dietApi }) {
                   className={[
                     "max-w-[82%] rounded-2xl px-4 py-3 shadow-sm border whitespace-pre-wrap leading-relaxed text-sm",
                     msg.role === "user"
-                      ? "self-end border-purple-100 bg-purple-50 text-slate-900"
-                      : "self-start border-[rgb(var(--border))] bg-white text-slate-900",
+                      ? "self-end border-lime-400/20 bg-lime-500/15 text-white"
+                      : "self-start border-white/10 bg-slate-900/60 text-slate-100",
                   ].join(" ")}
                 >
                   {msg.content}
                 </div>
               ))}
 
-              {/* Workout plan card */}
               {latestPlanDraft ? (
-                <div className="rounded-2xl border border-purple-200 bg-[rgb(var(--surface-2))] p-4 shadow-sm">
+                <div className="rounded-2xl border border-lime-400/20 bg-lime-500/10 p-4 shadow-sm">
                   <div className="flex items-start justify-between gap-3">
                     <div>
-                      <div className="text-sm font-semibold text-slate-900">
-                        Workout plan ready
-                      </div>
-                      <div className="text-xs text-[rgb(var(--muted))]">
+                      <div className="text-sm font-semibold text-white">Workout plan ready</div>
+                      <div className="text-xs text-slate-400">
                         {latestPlanDraft.title || "Workout plan"}
                       </div>
                     </div>
-                    <span className="rounded-full bg-white px-3 py-1 text-xs border border-purple-200 text-purple-700">
+                    <span className="rounded-full bg-white/10 px-3 py-1 text-xs border border-lime-400/20 text-lime-300">
                       Plan
                     </span>
                   </div>
 
-                  <ul className="mt-3 space-y-1 text-sm text-slate-800">
+                  <ul className="mt-3 space-y-1 text-sm text-slate-200">
                     {latestPlanDraft.items.slice(0, 6).map((it, idx) => (
                       <li key={idx} className="flex gap-2">
-                        <span className="font-medium text-slate-900">
+                        <span className="font-medium text-white">
                           {it.day} {it.time}
                         </span>
-                        <span className="text-slate-700">— {it.name}</span>
+                        <span className="text-slate-300">— {it.name}</span>
                       </li>
                     ))}
                   </ul>
@@ -238,13 +229,13 @@ export default function ChatPage({ plannerApi, dietApi }) {
                   <div className="mt-4 flex flex-wrap gap-2">
                     <button
                       onClick={addPlan}
-                      className="px-4 py-2.5 rounded-xl bg-purple-600 text-white shadow-sm hover:bg-purple-700 active:scale-[0.99] transition text-sm font-medium"
+                      className="px-4 py-2.5 rounded-xl bg-lime-500 text-slate-950 shadow-sm hover:bg-lime-400 active:scale-[0.99] transition text-sm font-medium"
                     >
                       Add to planner
                     </button>
                     <button
                       onClick={() => setLatestPlanDraft(null)}
-                      className="px-4 py-2.5 rounded-xl border border-[rgb(var(--border))] bg-white hover:bg-slate-50 transition text-sm font-medium"
+                      className="px-4 py-2.5 rounded-xl border border-white/10 bg-white/5 text-white hover:bg-white/10 transition text-sm font-medium"
                     >
                       Dismiss
                     </button>
@@ -252,28 +243,25 @@ export default function ChatPage({ plannerApi, dietApi }) {
                 </div>
               ) : null}
 
-              {/* Diet plan card */}
               {latestDietDraft ? (
-                <div className="rounded-2xl border border-purple-200 bg-[rgb(var(--surface-2))] p-4 shadow-sm">
+                <div className="rounded-2xl border border-lime-400/20 bg-lime-500/10 p-4 shadow-sm">
                   <div className="flex items-start justify-between gap-3">
                     <div>
-                      <div className="text-sm font-semibold text-slate-900">
-                        Diet plan ready
-                      </div>
-                      <div className="text-xs text-[rgb(var(--muted))]">
+                      <div className="text-sm font-semibold text-white">Diet plan ready</div>
+                      <div className="text-xs text-slate-400">
                         {latestDietDraft.title || "Meal plan"}
                       </div>
                     </div>
-                    <span className="rounded-full bg-white px-3 py-1 text-xs border border-purple-200 text-purple-700">
+                    <span className="rounded-full bg-white/10 px-3 py-1 text-xs border border-lime-400/20 text-lime-300">
                       Diet
                     </span>
                   </div>
 
-                  <ul className="mt-3 space-y-1 text-sm text-slate-800">
+                  <ul className="mt-3 space-y-1 text-sm text-slate-200">
                     {latestDietDraft.items.slice(0, 6).map((it, idx) => (
                       <li key={idx} className="flex gap-2">
-                        <span className="font-medium text-slate-900">{it.meal}</span>
-                        <span className="text-slate-700">— {it.name}</span>
+                        <span className="font-medium text-white">{it.meal}</span>
+                        <span className="text-slate-300">— {it.name}</span>
                       </li>
                     ))}
                   </ul>
@@ -281,13 +269,13 @@ export default function ChatPage({ plannerApi, dietApi }) {
                   <div className="mt-4 flex flex-wrap gap-2">
                     <button
                       onClick={addDiet}
-                      className="px-4 py-2.5 rounded-xl bg-purple-600 text-white shadow-sm hover:bg-purple-700 active:scale-[0.99] transition text-sm font-medium"
+                      className="px-4 py-2.5 rounded-xl bg-lime-500 text-slate-950 shadow-sm hover:bg-lime-400 active:scale-[0.99] transition text-sm font-medium"
                     >
                       Add to diet planner
                     </button>
                     <button
                       onClick={() => setLatestDietDraft(null)}
-                      className="px-4 py-2.5 rounded-xl border border-[rgb(var(--border))] bg-white hover:bg-slate-50 transition text-sm font-medium"
+                      className="px-4 py-2.5 rounded-xl border border-white/10 bg-white/5 text-white hover:bg-white/10 transition text-sm font-medium"
                     >
                       Dismiss
                     </button>
@@ -299,11 +287,10 @@ export default function ChatPage({ plannerApi, dietApi }) {
             </div>
           </div>
 
-          {/* Input row */}
-          <div className="border-t border-[rgb(var(--border))] p-4">
+          <div className="border-t border-white/10 p-4">
             <div className="flex gap-2">
               <input
-                className="flex-1 px-4 py-3 rounded-xl border border-[rgb(var(--border))] bg-white text-sm focus:outline-none focus:ring-4 focus:ring-purple-200"
+                className="flex-1 px-4 py-3 rounded-xl border border-white/10 bg-slate-900/70 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:ring-4 focus:ring-lime-300/20"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 placeholder={isSending ? "Sending..." : "Type your message..."}
@@ -316,8 +303,8 @@ export default function ChatPage({ plannerApi, dietApi }) {
                 className={[
                   "px-4 py-3 rounded-xl text-sm font-medium shadow-sm transition",
                   isSending
-                    ? "bg-purple-300 text-white cursor-not-allowed"
-                    : "bg-purple-600 text-white hover:bg-purple-700 active:scale-[0.99]",
+                    ? "bg-lime-300 text-slate-900 cursor-not-allowed"
+                    : "bg-lime-500 text-slate-950 hover:bg-lime-400 active:scale-[0.99]",
                 ].join(" ")}
               >
                 {isSending ? "..." : "Send"}
@@ -325,13 +312,13 @@ export default function ChatPage({ plannerApi, dietApi }) {
             </div>
 
             {!isLoggedIn ? (
-              <div className="mt-2 text-xs text-[rgb(var(--muted))]">
+              <div className="mt-2 text-xs text-slate-400">
                 Guest saves used: {guestSavesUsed || 0}/{guestSavesLimit || 5} — register to
                 save unlimited.
               </div>
             ) : null}
 
-            <div className="mt-2 text-[11px] text-[rgb(var(--muted))]">
+            <div className="mt-2 text-[11px] text-slate-500">
               FitPal provides general lifestyle guidance only — not medical advice.
             </div>
           </div>
