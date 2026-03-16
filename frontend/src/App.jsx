@@ -9,6 +9,7 @@ import RegisterPage from "./RegisterPage.jsx";
 import EvaluationPage from "./EvaluationPage.jsx";
 import LandingPage from "./LandingPage.jsx";
 import { useAuth } from "./AuthContext.jsx";
+import logo from "./assets/runners-bg.jpg"
 
 function TabLink({ to, children, end = false }) {
   return (
@@ -331,10 +332,11 @@ export default function App() {
       <header className="sticky top-0 z-20 border-b border-slate-800 bg-slate-950/90 backdrop-blur-xl">
         <div className="mx-auto max-w-6xl px-4 py-4 flex items-center justify-between gap-3">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-lime-400/20 bg-slate-900 shadow-[0_0_25px_rgba(132,204,22,0.12)]">
-              <div className="h-4 w-4 rounded-full bg-lime-400" />
-            </div>
-
+            <img
+              src={logo}
+              alt="FitPal"
+              className="h-10 w-10 rounded-2x1 object-cover shadow-lg shadow-lime-400/20"
+            />
             <div>
               <div className="font-semibold leading-tight text-white">FitPal</div>
               <div className="text-xs text-slate-400">Fitness • Diet • Planning</div>
