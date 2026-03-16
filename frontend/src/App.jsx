@@ -332,7 +332,7 @@ export default function App() {
       <header className="sticky top-0 z-20 border-b border-slate-800 bg-slate-950/90 backdrop-blur-xl">
         <div className="mx-auto max-w-6xl px-4 py-4 flex items-center justify-between gap-3">
           <div className="flex items-center gap-3">
-            <div classname="flex h-10 w-10 items-center justify-center rounded-full bg-lime-400/10 ring-1 ring-lime-400/30">
+            <div classname="flex h-10 w-10 items-center justify-center rounded-full bg-lime-400/10 ring-1 ring-lime-400/30 shadow-[0_0_20px_rgba(132,204,22,0.35)]">
               <img
                 src={logo}
                 alt="FitPal"
