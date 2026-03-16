@@ -335,7 +335,7 @@ export default function App() {
             <img
               src={logo}
               alt="FitPal"
-              className="h-10 w-10 rounded-2x1 object-cover shadow-lg shadow-lime-400/20"
+              className="h-10 w-10 rounded-full object-cover shadow-lg shadow-lime-400/20"
             />
             <div>
               <div className="font-semibold leading-tight text-white">FitPal</div>
