@@ -21,7 +21,8 @@ app.use(
       if (!origin) return callback(null, true);
       if (origin.startsWith("http://localhost:")) return callback(null, true);
       if (origin.startsWith("http://127.0.0.1:")) return callback(null, true);
-      return callback(new Error("CORS blocked: " + origin));
+      if (origin.startsWith("https://fitpal-honours-project.vercel.app")) return callback(null, true);
+      return callback(new Error("CORS blocked: " + origin)) 
     },
     credentials: true,
     methods: ["GET", "POST", "OPTIONS"],
