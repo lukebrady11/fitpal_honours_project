@@ -299,6 +299,7 @@ export default function App() {
             id: crypto.randomUUID(),
             meal: it.meal,
             name: it.name || "Meal idea",
+            recipe: Array.isArray(it.recipe) ? it.recipe : [],
             sourceTitle: dietDraft.title || "Diet plan",
           },
         ];

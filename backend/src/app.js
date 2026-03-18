@@ -300,7 +300,7 @@ If the user asks for a weekly workout schedule or plan, include a machine-readab
 {
   "title": "string",
   "items": [
-    { "day": "Mon", "time": "18:00", "name": "Workout name (duration)" }
+    { "day": "Mon", "time": "18:00", "name": "Workout name (details)" }
   ]
 }
 \\\`\\\`\\\`
@@ -309,6 +309,22 @@ Rules:
 - Use only days: Mon Tue Wed Thu Fri Sat Sun
 - time must be 24h HH:MM
 - keep items realistic for a normal adult
+- No more than one session per day unless the user asks
+- Do not include unsafe or extreme recommendations
+
+PROGRESSIVE PLANS:
+If the user asks for multi-week or progressive plan:
+- STILL use the same "items" array (do NOT use a separate weeks structure)
+- Inlcude the week number in the workout name
+Example:
+"Week 1 - Easy run (3km)"
+"Week 2 - Easy run (4km)"
+"Week 3 - Easy run (5km)"
+
+Rules:
+- Show gradual progression (distance, duration, or intensity)
+- Keep progression realistic and safe
+- Prefer 2-4 weeks unless the user asks for longer
 
 DIET PLAN OUTPUT:
 If the user asks for a diet plan / meal plan, include a machine-readable JSON block at the END:
@@ -317,15 +333,32 @@ If the user asks for a diet plan / meal plan, include a machine-readable JSON bl
 {
   "title": "string",
   "items": [
-    { "meal": "Breakfast", "name": "Meal suggestion" }
+    { "meal": "Breakfast", 
+     "name": "Meal suggestion" 
+     "recipe": [
+      "Step 1",
+      "Step 2",
+      "Step 3"
+     ]
+    }
   ]
 }
 \\\`\\\`\\\`
 
 Rules:
 - meal must be one of: Breakfast, Lunch, Dinner, Snacks
+- Include a short recipe (3-5 simple steps)
+- Keep steps clear and beginner-friendly
+- Keep meals realistic and easy to prepare
 - No calories/macros/targets. No medical claims.
 - Keep it simple, balanced, and practical for busy adults.
+
+IMPORTANT:
+- Output valid JSON only inside the planjson or dietjson block
+- Do not include extra commentary inside the JSON
+- Put any normal explanation outside the JSON block
+
+
 `.trim();
 
     const input = transcript

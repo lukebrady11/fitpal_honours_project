@@ -9,6 +9,7 @@ export default function DietPage({ dietApi }) {
 
   const [editingId, setEditingId] = useState(null);
   const [editName, setEditName] = useState("");
+  const [openRecipeId, setOpenRecipeId] = useState(null);
 
   const clearAll = () => {
     setDiet({ Breakfast: [], Lunch: [], Dinner: [], Snacks: [] });
@@ -66,6 +67,10 @@ export default function DietPage({ dietApi }) {
     cancelEdit();
   };
 
+  const toggleRecipe = (id) => {
+    setOpenRecipeId((prev) => (prev === id ? null : id));
+  };
+
   return (
     <div className="space-y-4">
       <div className="flex items-start justify-between gap-3">
@@ -103,6 +108,8 @@ export default function DietPage({ dietApi }) {
                   <div className="mt-3 flex flex-col gap-2">
                     {diet[meal].map((x) => {
                       const isEditing = editingId === x.id;
+                      const hasRecipe = Array.isArray(x.recipe) && x.recipe.length > 0;
+                      const isRecipeOpen = openRecipeId === x.id;
 
                       return (
                         <div
@@ -112,9 +119,39 @@ export default function DietPage({ dietApi }) {
                           {!isEditing ? (
                             <>
                               <div className="text-sm font-semibold text-white">{x.name}</div>
+
                               <div className="mt-1 text-xs text-slate-400">
                                 From: {x.sourceTitle || "Diet plan"}
                               </div>
+
+                              {hasRecipe ? (
+                                <div className="mt-3">
+                                  <button
+                                    onClick={() => toggleRecipe(x.id)}
+                                    className="px-3 py-2 rounded-xl border border-lime-400/20 bg-white/5 text-lime-300 hover:bg-white/10 transition text-xs font-medium"
+                                  >
+                                    {isRecipeOpen ? "Hide recipe" : "View recipe"}
+                                  </button>
+
+                                  {isRecipeOpen ? (
+                                    <div className="mt-3 rounded-xl border border-white/10 bg-slate-900/50 p-3">
+                                      <div className="text-xs font-semibold uppercase tracking-wide text-lime-300 mb-2">
+                                        Recipe
+                                      </div>
+                                      <div className="space-y-2">
+                                        {x.recipe.map((step, i) => (
+                                          <div key={i} className="text-sm text-slate-200">
+                                            <span className="text-lime-300 font-medium mr-2">
+                                              {i + 1}.
+                                            </span>
+                                            {step}
+                                          </div>
+                                        ))}
+                                      </div>
+                                    </div>
+                                  ) : null}
+                                </div>
+                              ) : null}
 
                               <div className="mt-3 flex flex-wrap items-center gap-2">
                                 <button
