@@ -2,6 +2,14 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { logEvent } from "./analytics";
 
+const STARTER_PROMPTS = [
+  "Create a 3-day beginner workout plan for this week at 18:00",
+  "Give me a beginner running plan that builds up gradually",
+  "Give me a simple 3-day meal plan",
+  "Give me healthy meal ideas for weight loss",
+  "What is a realistic daily step goal for me?",
+];
+
 export default function ChatPage({ plannerApi, dietApi }) {
   const addPlanDraftToPlanner = plannerApi?.addPlanDraftToPlanner || (() => {});
   const { guestSavesUsed, guestSavesLimit, isLoggedIn } = plannerApi || {};
@@ -13,7 +21,7 @@ export default function ChatPage({ plannerApi, dietApi }) {
     {
       role: "assistant",
       content:
-        "Hi! I’m FitPal 👋 Ask me for a simple workout plan, meal ideas, or motivation.\nTry: “Make me a 3-day beginner workout plan for this week at 6pm” or “Give me a simple 3-day meal plan”.",
+        "Hi! I’m FitPal 👋 Ask me for a simple workout plan, meal ideas, or motivation.\nTry a suggested prompt below or type your own question.",
     },
   ]);
 
@@ -30,17 +38,17 @@ export default function ChatPage({ plannerApi, dietApi }) {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, latestPlanDraft, latestDietDraft]);
 
-  const sendMessage = async () => {
-    if (!input.trim() || isSending) return;
+  const sendMessage = async (overrideText = null) => {
+    const textToSend = (overrideText ?? input).trim();
+    if (!textToSend || isSending) return;
 
-    const userText = input.trim();
     setInput("");
     setIsSending(true);
 
     setLatestPlanDraft(null);
     setLatestDietDraft(null);
 
-    const nextMessages = [...messages, { role: "user", content: userText }];
+    const nextMessages = [...messages, { role: "user", content: textToSend }];
     setMessages(nextMessages);
 
     logEvent(apiBase, { type: "chat_message_sent", isLoggedIn });
@@ -51,7 +59,7 @@ export default function ChatPage({ plannerApi, dietApi }) {
         headers: { "Content-Type": "application/json" },
         credentials: "include",
         body: JSON.stringify({
-          message: userText,
+          message: textToSend,
           history: nextMessages.slice(-12),
         }),
       });
@@ -164,6 +172,8 @@ export default function ChatPage({ plannerApi, dietApi }) {
     ]);
   };
 
+  const showStarterPrompts = messages.length <= 1 && !isSending;
+
   return (
     <div className="space-y-4">
       <div className="flex items-end justify-between gap-3">
@@ -201,7 +211,27 @@ export default function ChatPage({ plannerApi, dietApi }) {
                 </div>
               ))}
 
-              {latestPlanDraft ? (
+              {showStarterPrompts && (
+                <div className="rounded-2xl border border-white/10 bg-slate-900/40 p-4">
+                  <div className="text-sm font-semibold text-white mb-3">
+                    Suggested prompts
+                  </div>
+
+                  <div className="flex flex-wrap gap-2">
+                    {STARTER_PROMPTS.map((prompt) => (
+                      <button
+                        key={prompt}
+                        onClick={() => sendMessage(prompt)}
+                        className="px-3 py-2 rounded-xl border border-lime-400/20 bg-white/5 text-sm text-lime-300 hover:bg-white/10 hover:text-lime-200 transition"
+                      >
+                        {prompt}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {latestPlanDraft && (
                 <div className="rounded-2xl border border-lime-400/20 bg-lime-500/10 p-4 shadow-sm">
                   <div className="flex items-start justify-between gap-3">
                     <div>
@@ -241,9 +271,9 @@ export default function ChatPage({ plannerApi, dietApi }) {
                     </button>
                   </div>
                 </div>
-              ) : null}
+              )}
 
-              {latestDietDraft ? (
+              {latestDietDraft && (
                 <div className="rounded-2xl border border-lime-400/20 bg-lime-500/10 p-4 shadow-sm">
                   <div className="flex items-start justify-between gap-3">
                     <div>
@@ -281,7 +311,7 @@ export default function ChatPage({ plannerApi, dietApi }) {
                     </button>
                   </div>
                 </div>
-              ) : null}
+              )}
 
               <div ref={bottomRef} />
             </div>
@@ -298,7 +328,7 @@ export default function ChatPage({ plannerApi, dietApi }) {
                 disabled={isSending}
               />
               <button
-                onClick={sendMessage}
+                onClick={() => sendMessage()}
                 disabled={isSending}
                 className={[
                   "px-4 py-3 rounded-xl text-sm font-medium shadow-sm transition",
@@ -311,12 +341,12 @@ export default function ChatPage({ plannerApi, dietApi }) {
               </button>
             </div>
 
-            {!isLoggedIn ? (
+            {!isLoggedIn && (
               <div className="mt-2 text-xs text-slate-400">
                 Guest saves used: {guestSavesUsed || 0}/{guestSavesLimit || 5} — register to
                 save unlimited.
               </div>
-            ) : null}
+            )}
 
             <div className="mt-2 text-[11px] text-slate-500">
               FitPal provides general lifestyle guidance only — not medical advice.
