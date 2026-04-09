@@ -252,10 +252,7 @@ app.post("/chat", async (req, res) => {
 
     // ---- Robust JSON-block extraction (supports ```tag``` and \`\`\`tag\`\`\`) ----
     function extractJsonBlock(text, tag) {
-  // Matches:
-  //  ```tag ... ```
-  //  OR \`\`\`tag ... \`\`\`
-  // Use normal string quotes to avoid backtick parser issues.
+  
       const pattern =
         "(?:```|\\\\`\\\\`\\\\`)\\s*" +
         tag +
