@@ -55,7 +55,7 @@ export default function LandingPage() {
         </div>
       )}
 
-      {/* HERO */}
+      
       <div className="relative overflow-hidden rounded-3xl border border-white/10 shadow-lg min-h-[420px]">
         {/* Background runner image */}
         <div

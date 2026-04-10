@@ -6,13 +6,13 @@ import db from "../db.js";
 const router = express.Router();
 
 const COOKIE_NAME = "fitpal_token";
-const JWT_EXPIRES_IN = "7d"; // session length
+const JWT_EXPIRES_IN = "7d"; 
 
 function setAuthCookie(res, token) {
   res.cookie(COOKIE_NAME, token, {
     httpOnly: true,
     sameSite: "lax",
-    secure: false, // set true in production (https)
+    secure: false, 
     maxAge: 7 * 24 * 60 * 60 * 1000,
   });
 }
@@ -41,7 +41,7 @@ router.post("/register", async (req, res) => {
 
     const password_hash = await bcrypt.hash(password, 12);
 
-    // is_admin defaults to 0 (via table default), so we don't need to set it explicitly
+    
     const info = db
       .prepare("INSERT INTO users (email, password_hash, created_at) VALUES (?, ?, ?)")
       .run(email.toLowerCase(), password_hash, new Date().toISOString());

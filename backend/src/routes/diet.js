@@ -10,7 +10,7 @@ function emptyDiet() {
   return { Breakfast: [], Lunch: [], Dinner: [], Snacks: [] };
 }
 
-// GET /diet  -> returns grouped diet planner
+// GET /diet, returns diet planner
 router.get("/", requireAuth, (req, res) => {
   const rows = db
     .prepare(
@@ -35,7 +35,7 @@ router.get("/", requireAuth, (req, res) => {
   res.json({ diet: out });
 });
 
-// POST /diet/replace  body: { diet: {...} }  -> replaces all diet items
+// POST /diet/replace,  replaces all current diet items
 router.post("/replace", requireAuth, (req, res) => {
   const { diet } = req.body;
 

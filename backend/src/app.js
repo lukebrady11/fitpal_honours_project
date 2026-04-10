@@ -14,7 +14,7 @@ dotenv.config();
 
 const app = express();
 
-// ✅ Dev-friendly CORS (allows localhost on any port)
+// Dev-friendly CORS (allows localhost on any port)
 app.use(
   cors({
     origin: (origin, callback) => {
@@ -224,16 +224,16 @@ app.post("/chat", async (req, res) => {
     // ---- Safety triage first ----
     const triage = safetyTriage(message);
     if (triage) {
-      // triage.reply is a safe, non-medical response (your existing function)
+      // triage.reply is a safe, non-medical response
       return res.json({
         reply: triage.reply,
-        triage: triage.type, // e.g. "self_harm" etc
+        triage: triage.type, 
         planDraft: null,
         dietDraft: null,
       });
     }
 
-    // ---- sanitize + limit conversation history ----
+    // sanitize + limit conversation history
     const safeHistory = Array.isArray(history)
       ? history
           .filter(
@@ -245,12 +245,12 @@ app.post("/chat", async (req, res) => {
           .slice(-12)
       : [];
 
-    // Build a transcript (simple + reliable for MVP)
+    // Build a transcript 
     const transcript = safeHistory
       .map((m) => `${m.role === "user" ? "User" : "Assistant"}: ${m.content}`)
       .join("\n");
 
-    // ---- Robust JSON-block extraction (supports ```tag``` and \`\`\`tag\`\`\`) ----
+    // Robust JSON-block extraction (supports ```tag``` and \`\`\`tag\`\`\`)
     function extractJsonBlock(text, tag) {
   
       const pattern =

@@ -17,7 +17,7 @@ try {
     ADD COLUMN is_admin INTEGER NOT NULL DEFAULT 0;
   `);
 } catch {
-  // column already exists → do nothing
+  
 } 
 // Planner items table (per user)
 db.exec(`

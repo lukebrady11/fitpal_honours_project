@@ -38,16 +38,9 @@ router.post("/", (req, res) => {
     }
 
     // If logged in, you can pass userId by decoding cookie later.
-    // For MVP: we accept user_id only via auth check optionally:
+   
     let user_id = null;
-    // Try auth silently (don't require it)
-    try {
-      // reuse requireAuth logic without forcing a 401
-      // easiest: look for req.cookies token and validate here
-      // BUT to keep it minimal: we'll just store guestId for now if not provided.
-      // We'll add a logged-in route below for accurate user linking.
-    } catch {}
-
+    
     const guest_id =
       typeof guestId === "string" && guestId.length <= 100 ? guestId : null;
 

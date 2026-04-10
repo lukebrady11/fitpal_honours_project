@@ -83,7 +83,7 @@ export default function EvaluationPage() {
         setStatus("ok");
         return;
       } catch {
-        // keep trying
+        
       }
     }
 
@@ -95,7 +95,7 @@ export default function EvaluationPage() {
     if (loading) return;
     if (!user?.isAdmin) return;
     fetchSummary();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    
   }, [loading, user?.isAdmin]);
 
   const counts = useMemo(() => normalizeCounts(raw), [raw]);

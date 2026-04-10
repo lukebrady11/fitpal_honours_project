@@ -28,7 +28,7 @@ router.get("/", requireAuth, (req, res) => {
   return res.json({ planner });
 });
 
-// Replace planner (bulk save)
+// Replace planner 
 router.post("/replace", requireAuth, (req, res) => {
   const { planner } = req.body;
 

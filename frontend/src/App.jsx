@@ -179,7 +179,7 @@ export default function App() {
     [planner, emptyPlanner, user]
   );
 
-  // ---------- diet planner ----------
+  // diet planner 
   const emptyDiet = useMemo(
     () => ({
       Breakfast: [],
