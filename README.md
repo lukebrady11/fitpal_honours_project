@@ -61,11 +61,11 @@ Password: password
 ## Installation & Setup (Local)
 
 ### 1. Clone the repository
-```bash
+
 git clone (https://github.com/lukebrady11/fitpal_honours_project)
 cd fitpal_honours_projecy
 
-### Backend Setup 
+## Backend Setup 
 cd backend
 npm install
 npm start
