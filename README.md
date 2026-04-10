@@ -63,7 +63,7 @@ Password: password
 ### 1. Clone the repository
 
 git clone (https://github.com/lukebrady11/fitpal_honours_project)
-cd fitpal_honours_projecy
+cd fitpal_honours_project
 
 ## Backend Setup 
 cd backend
