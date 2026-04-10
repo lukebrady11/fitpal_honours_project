@@ -62,8 +62,8 @@ Password: password
 
 ### 1. Clone the repository
 ```bash
-git clone https://github.com/yourusername/your-repo-name.git
-cd your-repo-name
+git clone (https://github.com/lukebrady11/fitpal_honours_project)
+cd fitpal_honours_projecy
 
 ### Backend Setup 
 cd backend
