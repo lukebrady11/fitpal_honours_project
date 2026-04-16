@@ -53,7 +53,7 @@ To assist with evaluation, a test account is provided:
 Email: testbrady11@gmail.com
 Password: password1
 
-## Admin Account
+## Admin Account (Since SQLite is used in this developement, Render cannot access event logging. To view evaluation page it must be using localhost)
 
 Email: admin@gmail.com
 Password: password
@@ -68,12 +68,12 @@ cd fitpal_honours_project
 ## Backend Setup 
 cd backend
 npm install
-npm start
+npm run dev
 
 ### Frontend Setup
 cd frontend
 npm install
-npm start
+npm run dev
 
 ### Environment Variables 
 PORT=5173
