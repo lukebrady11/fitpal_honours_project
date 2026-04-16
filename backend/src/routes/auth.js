@@ -25,6 +25,30 @@ function clearAuthCookie(res) {
   });
 }
 
+router.post("/dev-reset-password", async (req, res) => {
+  try {
+    const { email, newPassword } = req.body;
+
+    const hash = await bcrypt.hash(newPassword, 10);
+
+    const stmt = db.prepare(`
+      UPDATE users
+      SET password_hash = ?
+      WHERE email = ?
+    `);
+
+    const result = stmt.run(hash, email);
+
+    if (result.changes === 0) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.json({ ok: true });
+  } catch {
+    res.status(500).json({ error: "Failed" });
+  }
+});
+
 router.post("/register", async (req, res) => {
   try {
     const { email, password } = req.body;
